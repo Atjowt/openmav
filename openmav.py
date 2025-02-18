@@ -1,66 +1,61 @@
 import subprocess
+import asyncio
+import telnetlib3 as tn
 
-# TODO: make this not suck
+def launch(flightgear_path='fgfs', port=5401) -> None:
+    command = [flightgear_path, f'--telnet={port}']
+    try:
+        subprocess.run(command, check=True)
+    except FileNotFoundError:
+        print('FlightGear executable not found. Check the path or installation')
+    except subprocess.CalledProcessError as e:
+        print('An error occurred while launching FlightGear:', e)
 
+class FGClient:
+    def __init__(self, reader: tn.TelnetReader, writer: tn.TelnetWriter) -> None:
+        self.reader = reader
+        self.writer = writer
 
-# TODO: provide native fields/functions for getting and settings arguments
-class FlightEnvironment:
-
-
-    def __init__(self, args=None) -> None:
-        self._args: list[str] = args or []
-
-
-    def add_arg(self, arg: str) -> None:
-        self._args.append(arg)
-
-
-    def get_args(self) -> list[str]:
-        return self._args
-
-
-    def simple(latitude: float, longitude: float, altitude: float,
-               heading: float, speed: float) -> 'FlightEnvironment':
-
-        env = FlightEnvironment()
-
-        env.add_arg("--aircraft=f16-block-30")
-        env.add_arg(f"--altitude={altitude}")
-        env.add_arg(f"--lat={latitude}")
-        env.add_arg(f"--lon={longitude}")
-        env.add_arg(f"--vc={speed}")
-        env.add_arg("--prop:/controls/engines/engine/throttle=0.7")
-        env.add_arg("--prop:/engines/engine[0]/running=true")
-        env.add_arg("--state=cruise")
-        env.add_arg("--telnet=5401")
-
-        return env
-
-
-class OpenMav:
-
-
-    def __init__(self, flightgear_path="fgfs") -> None:
-        self.flightgear_path: str = flightgear_path
-        self.loaded_environment: FlightEnvironment = None
-
-
-    def load(self, environment: FlightEnvironment) -> None:
-        self.loaded_environment = environment
-
-
-    def launch(self) -> None:
-
-        if self.loaded_environment is None:
-            raise Exception("No flight environment loaded!")
-
-        environment_args = self.loaded_environment.get_args()
-        launch_command = [self.flightgear_path] + environment_args
-
+    async def send(self, command: str, timeout=5) -> str:
+        print(f"Sending command: {command}")  # Debugging
+        self.writer.write(command + '\n')
         try:
-            subprocess.run(launch_command, check=True)
-        except FileNotFoundError:
-            print("FlightGear executable not found. Check the path or installation.")
-        except subprocess.CalledProcessError as e:
-            print(f"Error occurred while launching FlightGear: {e}")
+            # Wait for data with a timeout
+            response = await asyncio.wait_for(self.reader.read(1024), timeout)
+            print(f"Raw response: {response}")  # Debugging
+            return response.strip()
+        except asyncio.TimeoutError:
+            print("Timeout: No response received from FlightGear.")
+            return ""
 
+    async def get_altitude(self) -> float:
+        altitude_str = await self.send('get /position/altitude-ft')
+        if altitude_str:
+            try:
+                altitude_ft = float(altitude_str)
+                return altitude_ft
+            except ValueError:
+                print(f"Failed to parse altitude: {altitude_str}")
+        return 0.0  # Default value if parsing fails
+
+async def connect(host='127.0.0.1', port=5401) -> FGClient:
+    reader, writer = await tn.open_connection(host=host, port=port)
+    client = FGClient(reader, writer)
+    await client.send('data')  # Initialize the connection
+    return client
+
+async def main():
+    # Launch FlightGear (you can comment this out if FlightGear is already running)
+    # launch()
+
+    # Connect to FlightGear
+    client = await connect()
+
+    # Get altitude
+    altitude = await client.get_altitude()
+    print(f"Current altitude: {altitude} ft")
+
+    # You can add more commands here to interact with FlightGear
+
+if __name__ == "__main__":
+    asyncio.run(main())
