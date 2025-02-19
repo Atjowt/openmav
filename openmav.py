@@ -7,13 +7,14 @@ import asyncio
 import subprocess
 import telnetlib3 as tn
 
-def launch(flightgear_path='fgfs', port=5401) -> None:
+def launch(flightgear_path='fgfs', port=5401) -> subprocess.Popen:
     """
     Launches the FlightGear program on the given Telnet port.
     """
     command = [flightgear_path, f'--telnet={port}']
     try:
-        subprocess.run(command, check=True)
+        return subprocess.Popen(command, stdout=None)
+        # subprocess.run(command, shell=False, check=True)
     except FileNotFoundError:
         print('FlightGear executable not found. Check the path or installation')
     except subprocess.CalledProcessError as e:
@@ -37,7 +38,7 @@ class FGClient:
         Reads the value of an attribute.
         The value is automatically cast to the correct type.
         """
-        self.writer.write(b'get /position/altitude-ft\r\n')
+        self.writer.write(f'get {attribute}\r\n'.encode())
         response_bytes = await self.reader.readline()
         response = response_bytes.decode('utf-8')
         # print(response)
@@ -48,6 +49,7 @@ class FGClient:
         var_value = match.group(2)
         var_type = match.group(3)
         match var_type:
+            case 'string': return str(var_value)
             case 'double': return float(var_value)
             case 'none': return None # TODO: better handling for the no-type case
 
