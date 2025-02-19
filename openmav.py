@@ -1,8 +1,16 @@
-import subprocess
+"""
+OpenMaverick API for FlightGear
+"""
+
+import re
 import asyncio
+import subprocess
 import telnetlib3 as tn
 
 def launch(flightgear_path='fgfs', port=5401) -> None:
+    """
+    Launches the FlightGear program on the given Telnet port.
+    """
     command = [flightgear_path, f'--telnet={port}']
     try:
         subprocess.run(command, check=True)
@@ -11,51 +19,45 @@ def launch(flightgear_path='fgfs', port=5401) -> None:
     except subprocess.CalledProcessError as e:
         print('An error occurred while launching FlightGear:', e)
 
+# TODO: provide a mapping from native python objects to flightgear string parameter names
+
 class FGClient:
+
+    """
+    A FlightGear Telnet client.
+    Provides easy methods for getting and setting FlightGear parameters.
+    """
+
     def __init__(self, reader: tn.TelnetReader, writer: tn.TelnetWriter) -> None:
         self.reader = reader
         self.writer = writer
 
-    async def send(self, command: str, timeout=5) -> str:
-        print(f"Sending command: {command}")  # Debugging
-        self.writer.write(command + '\n')
-        try:
-            # Wait for data with a timeout
-            response = await asyncio.wait_for(self.reader.read(1024), timeout)
-            print(f"Raw response: {response}")  # Debugging
-            return response.strip()
-        except asyncio.TimeoutError:
-            print("Timeout: No response received from FlightGear.")
-            return ""
+    async def get(self, attribute: str):
+        """
+        Reads the value of an attribute.
+        The value is automatically cast to the correct type.
+        """
+        self.writer.write(b'get /position/altitude-ft\r\n')
+        response_bytes = await self.reader.readline()
+        response = response_bytes.decode('utf-8')
+        # print(response)
+        pattern = r'(.*) = \'(.*)\' \((.*)\)' # regular expression, matches expressions of the format '<name> = <value> (<type>)'
+        match = re.search(pattern, response)
+        if not match: raise Exception('Bad regular expression') # should be unreachable if the pattern isn't wrong
+        var_name = match.group(1) # unused (for now)
+        var_value = match.group(2)
+        var_type = match.group(3)
+        match var_type:
+            case 'double': return float(var_value)
+            case 'none': return None # TODO: better handling for the no-type case
 
-    async def get_altitude(self) -> float:
-        altitude_str = await self.send('get /position/altitude-ft')
-        if altitude_str:
-            try:
-                altitude_ft = float(altitude_str)
-                return altitude_ft
-            except ValueError:
-                print(f"Failed to parse altitude: {altitude_str}")
-        return 0.0  # Default value if parsing fails
+    async def set(self, attribute: str, value) -> None:
+        ... # TODO: implement setting of parameters
 
 async def connect(host='127.0.0.1', port=5401) -> FGClient:
-    reader, writer = await tn.open_connection(host=host, port=port)
+    """
+    Connect to a running FlightGear instance using host address and port.
+    """
+    reader, writer = await tn.open_connection(host=host, port=port, encoding=False)
     client = FGClient(reader, writer)
-    await client.send('data')  # Initialize the connection
     return client
-
-async def main():
-    # Launch FlightGear (you can comment this out if FlightGear is already running)
-    # launch()
-
-    # Connect to FlightGear
-    client = await connect()
-
-    # Get altitude
-    altitude = await client.get_altitude()
-    print(f"Current altitude: {altitude} ft")
-
-    # You can add more commands here to interact with FlightGear
-
-if __name__ == "__main__":
-    asyncio.run(main())

@@ -1,18 +1,15 @@
-import openmav
 import asyncio
+import openmav
 
 async def main():
-    # Launch FlightGear (you can comment this out if FlightGear is already running)
-    # openmav.launch()
-
-    # Connect to FlightGear
+    """
+    Example of getting flight altitude parameter
+    """
+    print('Connecting...')
     client = await openmav.connect()
+    print('Connected!')
+    altitude_ft = await client.get('/position/altitude-ft')
+    print('Current altitude is', altitude_ft, 'ft')
 
-    # Get altitude
-    altitude = await client.get_altitude()
-    print(f"Current altitude: {altitude} ft")
-
-    # You can add more commands here to interact with FlightGear
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     asyncio.run(main())
