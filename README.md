@@ -16,8 +16,8 @@ TODO
 
 ## Installing required Python packages
 First set up and activate the virtual environment, if you haven't already done so.
-- Install the 'flightgear-python' package by running `pip3 install flightgear-python --include-deps`.
-- Install the 'telnetlib3' package by running `pip3 install telnetlib3`.
+- Install the 'flightgear-python' package by running ```pip3 install flightgear-python --include-deps```.
+- Install the 'telnetlib3' package by running ```pip3 install telnetlib3```.
 
 ## Running the example code
 Once you have installed all required packages, you are ready to launch an example.
