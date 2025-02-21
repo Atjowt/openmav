@@ -12,7 +12,7 @@ TODO
 ## Setting up the Python virtual environment
 1. In the root of the project, create a directory named `venv` to hold the virtual environment (`mkdir venv/`).
 2. Create the virtual environment inside this directory by running `python -m venv venv/`.
-3. Enter the virtual environment by running (Linux) `source venv/bin/activate` or (Windows) `venv/Scripts/activate`. This will activate the virtual environment for your current shell session. You should now see the text "(venv)" written in your terminal. You may leave the environment at any time by writing `deactivate`.
+3. Enter the virtual environment by running (Linux) `source venv/bin/activate` or (Windows) `venv\Scripts\activate`. This will activate the virtual environment for your current shell session. You should now see the text "(venv)" written in your terminal. You may leave the environment at any time by writing `deactivate`.
 
 ## Installing required Python packages
 First set up and activate the virtual environment, if you haven't already done so.
