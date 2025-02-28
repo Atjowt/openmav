@@ -1,6 +1,6 @@
+*.egg-info
+dist/
 venv/
 .venv/
 env/
 __pycache__/
-*.o
-iconnect
