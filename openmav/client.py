@@ -1,7 +1,3 @@
-"""
-OpenMaverick API for FlightGear
-"""
-
 import socket
 import ctypes
 from .data import FlightData
