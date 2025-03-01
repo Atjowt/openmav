@@ -7,7 +7,7 @@ def main():
     host = prompt('Enter host address', default='127.0.0.1')
     port = int(prompt('Enter port', default='5500'))
     print('Connecting...')
-    client = openmav.Connection(host, port)
+    client = openmav.ConnectionUDP(host, port)
     print('Connected!')
     while data := client.receive():
         print()

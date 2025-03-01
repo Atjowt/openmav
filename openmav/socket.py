@@ -19,4 +19,3 @@ class Connection:
 
     def disconnect(self) -> None:
         self._socket.close()
-
