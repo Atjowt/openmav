@@ -51,10 +51,28 @@ class FGClient:
         match var_type:
             case 'string': return str(var_value)
             case 'double': return float(var_value)
+            case 'bool': return var_value == 'true'
             case 'none': return None # TODO: better handling for the no-type case
 
     async def set(self, attribute: str, value) -> None:
-        ... # TODO: implement setting of parameters
+        """
+        Sets the value of an attribute.
+        The input value is validated to ensure it matches the expected type.
+        """
+        attribute_value = await self.get(attribute)
+        
+        if isinstance(attribute_value, float) and isinstance(value, (int, float)):
+            self.writer.write(f'set {attribute} {value}\r\n'.encode())
+        elif isinstance(attribute_value, str) and isinstance(value, str):
+            self.writer.write(f'set {attribute} {value}\r\n'.encode())
+        elif isinstance(attribute_value, bool) and isinstance(value, bool):
+            self.writer.write(f"set {attribute} {1 if value else 0}\r\n".encode())
+        else:
+            raise TypeError(f"Type mismatch: Expected {type(attribute_value).__name__}, got {type(value).__name__}")
+        # TODO better handling for the no-type case
+        
+        # Clear buffer
+        await self.reader.readline()
 
 async def connect(host='127.0.0.1', port=5401) -> FGClient:
     """
