@@ -24,7 +24,6 @@ def main():
     print('Launching FlightGear...')
 
     process = Launcher() \
-        .input(port=5400, rate=2) \
         .output(port=5500, rate=10) \
         .aircraft(Aircraft.F16_BLOCK_30) \
         .altitude(7000) \
