@@ -1,6 +1,7 @@
 from subprocess import Popen
 
 # TODO: add preset launchers, like the F16 fly straight example
+# TODO: make command include parameters only if they are specified
 
 class Launcher:
 
@@ -12,10 +13,10 @@ class Launcher:
         self._altitude = value
         return self
 
-    def input(self, port: int, rate: int) -> 'Launcher':
-        self._input_port = port
-        self._input_rate = rate
-        return self
+    # def input(self, port: int, rate: int) -> 'Launcher':
+    #     self._input_port = port
+    #     self._input_rate = rate
+    #     return self
 
     def output(self, port: int, rate: int) -> 'Launcher':
         self._output_port = port
@@ -32,7 +33,7 @@ class Launcher:
             # '--fdm=null',
             f'--aircraft={self._aircraft}',
             f'--altitude={self._altitude}',
-            f'--generic=socket,in,{self._input_rate},localhost,{self._input_port},tcp,openmav',
+            # f'--generic=socket,in,{self._input_rate},localhost,{self._input_port},tcp,openmav',
             f'--generic=socket,out,{self._output_rate},localhost,{self._output_port},udp,openmav',
         ] + self._extra
         return Popen(command)
