@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<PropertyList>
+	<generic>
+		<output>
+			<binary_mode>true</binary_mode>
+			<binary_footer>none</binary_footer>
+			<byte_order>host</byte_order>
+			<chunk>
+				<name>altitude</name>
+				<node>/position/altitude-ft</node>
+				<type>float</type>
+			</chunk>
+			<chunk>
+				<name>longitude</name>
+				<node>/position/longitude-deg</node>
+				<type>float</type>
+			</chunk>
+			<chunk>
+				<name>latitude</name>
+				<node>/position/latitude-deg</node>
+				<type>float</type>
+			</chunk>
+		</output>
+	</generic>
+</PropertyList>
