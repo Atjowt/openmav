@@ -10,8 +10,13 @@ def main():
         print('Connection failed. Is FlightGear running?')
         return
     print('Connected!')
-    while data := reader.read():
+    while True:
+        try:
+            data = reader.read()
+        except:
+            break
         print('Current altitude is', data.altitude, 'feet')
+    print('Closing...')
     reader.close()
 
 if __name__ == '__main__':
