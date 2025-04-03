@@ -13,6 +13,7 @@ def main():
     print('Launching FlightGear...')
 
     Launcher() \
+        .input(port=5400, rate=10) \
         .output(port=5500, rate=10) \
         .aircraft(Aircraft.F16_BLOCK_30) \
         .altitude(7000) \
@@ -21,8 +22,7 @@ def main():
         .heading(180) \
         .speed(400) \
         .extra(args) \
-        .launch() \
-        .wait()
+        .launch()
 
 if __name__ == '__main__':
     main()
