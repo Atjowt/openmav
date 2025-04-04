@@ -1,5 +1,5 @@
-from .launch import Launcher
+from .launch import launch, LaunchOptions, SocketOptions
 from .reader import Reader
 from .writer import Writer
 from .data import FGData
-from .aircraft import Aircraft
+from . import aircraft
