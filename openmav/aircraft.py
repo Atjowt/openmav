@@ -1,1 +1,4 @@
 F16_BLOCK_30 = 'f16-block-30'
+CESSNA_C172P = 'c172p'
+F_15C = 'f15c'
+BOEING_707 = '707'
