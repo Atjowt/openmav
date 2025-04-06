@@ -1,4 +1,5 @@
 from subprocess import Popen
+import argparse
 
 # TODO: add preset launchers, like the F16 fly straight example
 # TODO: make command include parameters only if they are specified
@@ -30,6 +31,28 @@ class LaunchOptions:
         self.input = input
         self.output = output
         self.args = args
+
+
+def read_launch_options(options: LaunchOptions) -> LaunchOptions:
+    parser = argparse.ArgumentParser(description="The program launches FlightGear with the specified startup parameters.")
+
+    parser.add_argument("--aircraft", type=str, default=options.aircraft, help="Specifies what aircraft model to use.")
+    parser.add_argument("--altitude", type=float, default=options.altitude, help="Specifies the initial altitude.")
+    parser.add_argument("--latitude", type=float, default=options.latitude, help="Specifies the initial latitude.")
+    parser.add_argument("--longitude", type=float, default=options.longitude, help="Specifies the initial longitude.")
+    parser.add_argument("--heading", type=float, default=options.heading, help="Specifies the initial heading (in degrees).")
+    parser.add_argument("--speed", type=float, default=options.speed, help="Specifies the initial speed.")
+    args = parser.parse_args()
+
+    options.aircraft = args.aircraft
+    options.altitude = args.altitude
+    options.latitude = args.latitude
+    options.longitude = args.longitude
+    options.heading = args.heading
+    options.speed = args.speed
+
+    return options
+
 
 def launch(path: str = 'fgfs', options: LaunchOptions | None = None) -> Popen[bytes]:
     command = [path]
