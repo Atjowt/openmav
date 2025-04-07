@@ -14,7 +14,7 @@ def main():
         return
     print('Connected!')
     full_turn = 360.0
-    num_steps = 80
+    num_steps = 60
     delta_turn = full_turn / num_steps
     for step in range(num_steps):
         in_data = reader.read()
