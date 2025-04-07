@@ -11,13 +11,18 @@
 				<type>float</type>
 			</chunk>
 			<chunk>
+				<name>latitude</name>
+				<node>/position/latitude-deg</node>
+				<type>float</type>
+			</chunk>
+			<chunk>
 				<name>longitude</name>
 				<node>/position/longitude-deg</node>
 				<type>float</type>
 			</chunk>
 			<chunk>
-				<name>latitude</name>
-				<node>/position/latitude-deg</node>
+				<name>throttle</name>
+				<node>/controls/engines/engine[0]/throttle</node>
 				<type>float</type>
 			</chunk>
 			<chunk>
@@ -29,6 +34,19 @@
 				<name>speed</name>
 				<node>/velocities/airspeed-kt</node>
 				<type>float</type>
+				<name>roll</name>
+				<node>/orientation/roll-deg</node>
+				<type>float</type>
+			</chunk>
+			<chunk>
+				<name>engine_running</name>
+				<node>/engines/engine[0]/running</node>
+				<type>bool</type>
+			</chunk>
+			<chunk>
+				<name>engine_rpm</name>
+				<node>/engines/engine[0]/rpm</node>
+				<type>int</type>
 			</chunk>
 		</output>
 		<input>
@@ -36,18 +54,13 @@
 			<binary_footer>none</binary_footer>
 			<byte_order>host</byte_order>
 			<chunk>
-				<name>altitude</name>
-				<node>/position/altitude-ft</node>
+				<name>throttle</name>
+				<node>/controls/engines/engine[0]/throttle</node>
 				<type>float</type>
 			</chunk>
 			<chunk>
-				<name>longitude</name>
-				<node>/position/longitude-deg</node>
-				<type>float</type>
-			</chunk>
-			<chunk>
-				<name>latitude</name>
-				<node>/position/latitude-deg</node>
+				<name>roll</name>
+				<node>/orientation/roll-deg</node>
 				<type>float</type>
 			</chunk>
 			<chunk>
