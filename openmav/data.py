@@ -10,6 +10,9 @@ class FGData:
         altitude: float,
         latitude: float,
         longitude: float,
+        heading: float,
+        speed: float,
+        aircraft: str,
     ) -> None:
         self.altitude = altitude
         self.latitude = latitude
@@ -20,7 +23,10 @@ class FGData:
             FGData.format,
             self.altitude,
             self.latitude,
-            self.longitude
+            self.longitude,
+            self.heading,
+            self.speed,
+            self.aircraft
         )
 
     @classmethod

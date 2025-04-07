@@ -20,6 +20,16 @@
 				<node>/position/latitude-deg</node>
 				<type>float</type>
 			</chunk>
+			<chunk>
+				<name>heading</name>
+				<node>/orientation/heading-deg</node>
+				<type>float</type>
+			</chunk>
+			<chunk>
+				<name>speed</name>
+				<node>/velocities/airspeed-kt</node>
+				<type>float</type>
+			</chunk>
 		</output>
 		<input>
 			<binary_mode>true</binary_mode>
@@ -38,6 +48,16 @@
 			<chunk>
 				<name>latitude</name>
 				<node>/position/latitude-deg</node>
+				<type>float</type>
+			</chunk>
+			<chunk>
+				<name>heading</name>
+				<node>/orientation/heading-deg</node>
+				<type>float</type>
+			</chunk>
+			<chunk>
+				<name>speed</name>
+				<node>/velocities/airspeed-kt</node>
 				<type>float</type>
 			</chunk>
 		</input>
