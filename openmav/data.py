@@ -1,34 +1,54 @@
 import struct
 
-class FGData:
+# https://docs.python.org/3/library/struct.html#format-strings
 
-    format = '@fff'
+# This data should match the procotol defined in [protocol/openmav.xml].
+
+class InData:
+
+    format = '@fffffffi?'
     size = struct.calcsize(format)
 
-    def __init__ (
-        self,
+    def __init__ (self,
         altitude: float,
         latitude: float,
         longitude: float,
         heading: float,
         speed: float,
-        aircraft: str,
+        throttle: float,
+        roll: float,
+        engine_rpm: int,
+        engine_running: bool,
     ) -> None:
         self.altitude = altitude
         self.latitude = latitude
         self.longitude = longitude
+        self.heading = heading
+        self.speed = speed
+        self.engine_rpm = engine_rpm
+        self.engine_running = engine_running
+        self.throttle = throttle
+        self.roll = roll
+
+    @classmethod
+    def from_bytes(cls, raw: bytes) -> 'InData':
+        return InData(*struct.unpack(InData.format, raw))
+
+class OutData:
+
+    format = '@ff'
+    size = struct.calcsize(format)
+
+    def __init__ (self,
+        throttle: float,
+        roll: float,
+    ) -> None:
+        self.throttle = throttle
+        self.roll= roll
 
     def to_bytes(self) -> bytes:
         return struct.pack (
-            FGData.format,
-            self.altitude,
-            self.latitude,
-            self.longitude,
-            self.heading,
-            self.speed,
-            self.aircraft
+            OutData.format,
+            self.throttle,
+            self.roll,
         )
-
-    @classmethod
-    def from_bytes(cls, raw: bytes) -> 'FGData':
-        return FGData(*struct.unpack(FGData.format, raw))

@@ -1,6 +1,6 @@
 from socket import socket, AF_INET, SOCK_DGRAM
 
-from .data import FGData
+from .data import InData
 
 class Reader:
 
@@ -8,9 +8,9 @@ class Reader:
         self.socket = socket(AF_INET, SOCK_DGRAM)
         self.socket.bind((host, port))
 
-    def read(self) -> FGData:
-        raw, _ = self.socket.recvfrom(FGData.size)
-        data = FGData.from_bytes(raw)
+    def read(self) -> InData:
+        raw, _ = self.socket.recvfrom(InData.size)
+        data = InData.from_bytes(raw)
         return data
 
     def close(self) -> None:

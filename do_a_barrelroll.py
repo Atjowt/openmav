@@ -13,12 +13,16 @@ def main():
         print('Connection refused. Is FlightGear running?')
         return
     print('Connected!')
-    while in_data := reader.read():
+    full_turn = 360.0
+    num_steps = 80
+    delta_turn = full_turn / num_steps
+    for step in range(num_steps):
+        in_data = reader.read()
         print('Current altitude is', in_data.altitude, 'feet')
         print('Current roll is', in_data.roll, 'degrees')
         out_data = openmav.OutData (
             throttle=0.7,
-            roll=in_data.roll,
+            roll=in_data.roll+delta_turn
         )
         writer.write(out_data)
     print('Closing...')

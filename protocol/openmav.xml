@@ -21,11 +21,6 @@
 				<type>float</type>
 			</chunk>
 			<chunk>
-				<name>throttle</name>
-				<node>/controls/engines/engine[0]/throttle</node>
-				<type>float</type>
-			</chunk>
-			<chunk>
 				<name>heading</name>
 				<node>/orientation/heading-deg</node>
 				<type>float</type>
@@ -34,19 +29,26 @@
 				<name>speed</name>
 				<node>/velocities/airspeed-kt</node>
 				<type>float</type>
+			</chunk>
+			<chunk>
+				<name>throttle</name>
+				<node>/controls/engines/engine[0]/throttle</node>
+				<type>float</type>
+			</chunk>
+			<chunk>
 				<name>roll</name>
 				<node>/orientation/roll-deg</node>
 				<type>float</type>
 			</chunk>
 			<chunk>
-				<name>engine_running</name>
-				<node>/engines/engine[0]/running</node>
-				<type>bool</type>
-			</chunk>
-			<chunk>
 				<name>engine_rpm</name>
 				<node>/engines/engine[0]/rpm</node>
 				<type>int</type>
+			</chunk>
+			<chunk>
+				<name>engine_running</name>
+				<node>/engines/engine[0]/running</node>
+				<type>bool</type>
 			</chunk>
 		</output>
 		<input>
@@ -61,16 +63,6 @@
 			<chunk>
 				<name>roll</name>
 				<node>/orientation/roll-deg</node>
-				<type>float</type>
-			</chunk>
-			<chunk>
-				<name>heading</name>
-				<node>/orientation/heading-deg</node>
-				<type>float</type>
-			</chunk>
-			<chunk>
-				<name>speed</name>
-				<node>/velocities/airspeed-kt</node>
 				<type>float</type>
 			</chunk>
 		</input>

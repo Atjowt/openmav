@@ -1,8 +1,7 @@
 from subprocess import Popen
 import argparse
 
-# TODO: add preset launchers, like the F16 fly straight example
-# TODO: make command include parameters only if they are specified
+# TODO: add preset launch options
 
 class SocketOptions:
     def __init__(self, port=5400, rate=10) -> None:
@@ -18,6 +17,8 @@ class LaunchOptions:
         latitude: float | None = None,
         longitude: float | None = None,
         speed: float | None = None,
+        throttle: float | None = None,
+        engine_running: bool | None = None,
         input: SocketOptions | None = None,
         output: SocketOptions | None = None,
         args: list[str] | None = None,
@@ -28,6 +29,8 @@ class LaunchOptions:
         self.latitude = latitude
         self.longitude = longitude
         self.speed = speed
+        self.throttle = throttle
+        self.engine_running = engine_running
         self.input = input
         self.output = output
         self.args = args
@@ -63,6 +66,8 @@ def launch(path: str = 'fgfs', options: LaunchOptions | None = None) -> Popen[by
         if options.latitude is not None: command.append(f'--lat={options.latitude}')
         if options.longitude is not None: command.append(f'--lon={options.longitude}')
         if options.speed is not None: command.append(f'--vc={options.speed}')
+        if options.throttle is not None: command.append(f'--prop:/controls/engines/engine[0]/throttle={options.throttle}')
+        if options.engine_running is not None: command.append(f'--prop:/engines/engine[0]/running={str(options.engine_running).lower()}')
         if options.input is not None: command.append(f'--generic=socket,in,{options.input.rate},localhost,{options.input.port},udp,openmav')
         if options.output is not None: command.append(f'--generic=socket,out,{options.output.rate},localhost,{options.output.port},udp,openmav')
         if options.args is not None: command.extend(options.args)

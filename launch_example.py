@@ -12,14 +12,15 @@ def main():
         longitude=17.1,
         heading=180.0,
         speed=400.0,
-        input=openmav.SocketOptions(port=5400, rate=10),
-        output=openmav.SocketOptions(port=5500, rate=10),
+        throttle=0.7,
+        engine_running=True,
+        input=openmav.SocketOptions(port=5400, rate=30),
+        output=openmav.SocketOptions(port=5500, rate=30),
     )
 
     launch_options.args = [
-        f'--prop:/controls/engines/engine/throttle=0.7',
-        f'--prop:/engines/engine[0]/running=true',
-        f'--state=cruise',
+        '--state=cruise',
+        '--httpd=5000',
     ]
 
     launch_options = openmav.read_launch_options(launch_options) # reads launch options from the command line when starting program
