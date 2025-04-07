@@ -8,6 +8,6 @@
 
 ## Setting up and running the examples
 FlightGear has an internal Property Tree containing all information about the current state; position, orientation, weather conditions, etc. The program exposes a few different methods for communicating with the program, of which we use TCP and UDP sockets. There is also support for HTTP: by running FlightGear with `fgfs --httpd=5000` you can go to `localhost:5000` in your web browser, which will take you to the builtin FlightGear web API. Here you can go to to Simulator > Properties to inspect the property tree and even change some values.
-FlightGear uses what is called a Flight Dynamics Model, or FDM. The FDM controls how the simulation behaves. FlightGear allows for interchaning the FDM the application uses, which means you could outsource the flight dynamics to another program, or turn it off entirely. This is useful for example when setting properties manually, since otherwise they will be overridden immediately. To turn off the FDM, launch FlightGear using `fgfs --fdm=null`.
+
 As mentioned earlier, OpenMav uses sockets to communicate. FlightGear has a "general" protocol which lets you specify your own datadata  protocol through an XML file. OpenMav defines its own protocol in the file `protocol/openmav.xml`, which **must be copied locally** to `$FG_ROOT/Protocol` for FlightGear to recognize it on launch.
 With the protocol installed, you should be able to run the examples `launch_example.py` and `connect_example.py`.
