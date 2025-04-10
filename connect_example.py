@@ -18,7 +18,6 @@ def main():
         print('Current roll is', in_data.roll, 'degrees')
         out_data = openmav.OutData (
             throttle=0.7,
-            roll=in_data.roll,
         )
         writer.write(out_data)
     print('Closing...')

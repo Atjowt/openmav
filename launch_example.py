@@ -7,12 +7,12 @@ def main():
 
     launch_options = openmav.LaunchOptions (
         aircraft=openmav.aircraft.F16_BLOCK_30,
-        altitude=7000.0,
-        latitude=60.8,
-        longitude=17.1,
+        altitude=5000.0,
+        latitude=59.331754,
+        longitude=18.057119,
         heading=180.0,
         speed=400.0,
-        throttle=0.7,
+        throttle=0.5,
         engine_running=True,
         input=openmav.SocketOptions(port=5400, rate=30),
         output=openmav.SocketOptions(port=5500, rate=30),

@@ -36,6 +36,21 @@
 				<type>float</type>
 			</chunk>
 			<chunk>
+				<name>aileron</name>
+				<node>/controls/flight/aileron</node>
+				<type>float</type>
+			</chunk>
+			<chunk>
+				<name>elevator</name>
+				<node>/controls/flight/elevator</node>
+				<type>float</type>
+			</chunk>
+			<chunk>
+				<name>rudder</name>
+				<node>/controls/flight/rudder</node>
+				<type>float</type>
+			</chunk>
+			<chunk>
 				<name>roll</name>
 				<node>/orientation/roll-deg</node>
 				<type>float</type>
@@ -61,8 +76,18 @@
 				<type>float</type>
 			</chunk>
 			<chunk>
-				<name>roll</name>
-				<node>/orientation/roll-deg</node>
+				<name>aileron</name>
+				<node>/controls/flight/aileron</node>
+				<type>float</type>
+			</chunk>
+			<chunk>
+				<name>elevator</name>
+				<node>/controls/flight/elevator</node>
+				<type>float</type>
+			</chunk>
+			<chunk>
+				<name>rudder</name>
+				<node>/controls/flight/rudder</node>
 				<type>float</type>
 			</chunk>
 		</input>

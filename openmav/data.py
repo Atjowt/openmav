@@ -6,7 +6,7 @@ import struct
 
 class InData:
 
-    format = '@fffffffi?'
+    format = '@ffffffffffi?'
     size = struct.calcsize(format)
 
     def __init__ (self,
@@ -16,6 +16,9 @@ class InData:
         heading: float,
         speed: float,
         throttle: float,
+        aileron: float,
+        elevator: float,
+        rudder: float,
         roll: float,
         engine_rpm: int,
         engine_running: bool,
@@ -25,10 +28,13 @@ class InData:
         self.longitude = longitude
         self.heading = heading
         self.speed = speed
+        self.throttle = throttle
+        self.aileron = aileron
+        self.elevator = elevator
+        self.rudder = rudder
+        self.roll = roll
         self.engine_rpm = engine_rpm
         self.engine_running = engine_running
-        self.throttle = throttle
-        self.roll = roll
 
     @classmethod
     def from_bytes(cls, raw: bytes) -> 'InData':
@@ -36,19 +42,25 @@ class InData:
 
 class OutData:
 
-    format = '@ff'
+    format = '@ffff'
     size = struct.calcsize(format)
 
     def __init__ (self,
         throttle: float,
-        roll: float,
+        aileron: float,
+        elevator: float,
+        rudder: float,
     ) -> None:
         self.throttle = throttle
-        self.roll= roll
+        self.aileron = aileron
+        self.elevator = elevator
+        self.rudder = rudder
 
     def to_bytes(self) -> bytes:
         return struct.pack (
             OutData.format,
             self.throttle,
-            self.roll,
+            self.aileron,
+            self.elevator,
+            self.rudder,
         )
