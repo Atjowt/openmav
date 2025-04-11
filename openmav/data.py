@@ -64,3 +64,13 @@ class OutData:
             self.elevator,
             self.rudder,
         )
+
+    @classmethod
+    def from_indata(cls, in_data: InData) -> 'OutData':
+        return OutData (
+            throttle=in_data.throttle,
+            aileron=in_data.aileron,
+            elevator=in_data.elevator,
+            rudder=in_data.rudder,
+        )
+

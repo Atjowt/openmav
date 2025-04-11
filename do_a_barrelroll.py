@@ -4,42 +4,51 @@ import openmav
 
 def main():
 
-    reader = openmav.Reader(host='localhost', port=5500)
-    writer = openmav.Writer(host='localhost', port=5400)
+    reader = openmav.Reader()
+    writer = openmav.Writer()
 
-    start_data = reader.read()
+    in_data = reader.read()
 
-    out_data = openmav.OutData (
-        throttle=start_data.throttle,
-        aileron=start_data.aileron,
-        elevator=start_data.elevator,
-        rudder=start_data.rudder,
-    )
+    out_data = openmav.OutData.from_indata(in_data)
 
     out_data.aileron = 0.8 # tilt the aircraft
     out_data.throttle *= 2.0 # double the throttle!
 
     print('Barrelroll!')
+
     writer.write(out_data)
 
+    threshold = 5.0
+
+    initial_roll = in_data.roll
+
+    # wait until rolled 180'
     while True:
         in_data = reader.read()
         print('Roll is ', in_data.roll, 'degrees')
-        if abs(in_data.roll - start_data.roll) > 130.0:
+        if abs(in_data.roll - initial_roll) > 180.0 - threshold:
             break
 
     print('Upside-down')
 
+    # wait until rolled another 180'
     while True:
         in_data = reader.read()
         print('Roll is ', in_data.roll, 'degrees')
-        if abs(in_data.roll - start_data.roll) < 30.0:
+        if abs(in_data.roll - initial_roll) < threshold:
             break
 
+    # stabilize rotation
+    print('Stabilizing')
+    for _ in range(90):
+        in_data = reader.read()
+        out_data = openmav.OutData.from_indata(in_data)
+        delta_roll = initial_roll - in_data.roll
+        print('Delta roll: ', delta_roll)
+        out_data.aileron = 10.0 * (delta_roll / 360.0) # tilt ailerons to counteract roll
+        writer.write(out_data)
+
     print('Done')
-    out_data.aileron = start_data.aileron
-    out_data.throttle = start_data.throttle
-    writer.write(out_data)
 
     reader.close()
     writer.close()

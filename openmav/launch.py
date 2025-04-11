@@ -4,9 +4,10 @@ import argparse
 # TODO: add preset launch options
 
 class SocketOptions:
-    def __init__(self, port=5400, rate=10) -> None:
+    def __init__(self, port=5400, rate=10, kind='udp') -> None:
         self.port = port
         self.rate = rate
+        self.kind = kind
 
 class LaunchOptions:
 
@@ -68,8 +69,8 @@ def launch(path: str = 'fgfs', options: LaunchOptions | None = None) -> Popen[by
         if options.speed is not None: command.append(f'--vc={options.speed}')
         if options.throttle is not None: command.append(f'--prop:/controls/engines/engine[0]/throttle={options.throttle}')
         if options.engine_running is not None: command.append(f'--prop:/engines/engine[0]/running={str(options.engine_running).lower()}')
-        if options.input is not None: command.append(f'--generic=socket,in,{options.input.rate},localhost,{options.input.port},udp,openmav')
-        if options.output is not None: command.append(f'--generic=socket,out,{options.output.rate},localhost,{options.output.port},udp,openmav')
+        if options.input is not None: command.append(f'--generic=socket,in,{options.input.rate},localhost,{options.input.port},{options.input.kind},openmav')
+        if options.output is not None: command.append(f'--generic=socket,out,{options.output.rate},localhost,{options.output.port},{options.output.kind},openmav')
         if options.args is not None: command.extend(options.args)
     return Popen(command)
 
