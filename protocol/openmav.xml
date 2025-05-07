@@ -56,6 +56,26 @@
 				<type>float</type>
 			</chunk>
 			<chunk>
+				<name>yaw</name>
+				<node>/orientation/yaw-deg</node>
+				<type>float</type>
+			</chunk>
+			<chunk>
+				<name>pitch</name>
+				<node>/orientation/pitch-deg</node>
+				<type>float</type>
+			</chunk>
+			<chunk>
+				<name>roll_rate</name>
+				<node>/orientation/roll-rate-degps</node>
+				<type>float</type>
+			</chunk>
+			<chunk>
+				<name>pitch_rate</name>
+				<node>/orientation/pitch-rate-degps</node>
+				<type>float</type>
+			</chunk>
+			<chunk>
 				<name>engine_rpm</name>
 				<node>/engines/engine[0]/rpm</node>
 				<type>int</type>

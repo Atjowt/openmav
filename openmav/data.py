@@ -6,7 +6,7 @@ import struct
 
 class InData:
 
-    format = '@ffffffffffi?'
+    format = '@ffffffffffffffi?'
     size = struct.calcsize(format)
 
     def __init__ (self,
@@ -20,6 +20,10 @@ class InData:
         elevator: float,
         rudder: float,
         roll: float,
+        yaw: float,
+        pitch: float,
+        roll_rate: float,
+        pitch_rate: float,
         engine_rpm: int,
         engine_running: bool,
     ) -> None:
@@ -33,6 +37,10 @@ class InData:
         self.elevator = elevator
         self.rudder = rudder
         self.roll = roll
+        self.yaw = yaw
+        self.pitch = pitch
+        self.roll_rate = roll_rate
+        self.pitch_rate = pitch_rate
         self.engine_rpm = engine_rpm
         self.engine_running = engine_running
 
